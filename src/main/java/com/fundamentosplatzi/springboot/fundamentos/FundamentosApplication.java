@@ -1,15 +1,12 @@
 package com.fundamentosplatzi.springboot.fundamentos;
 
-import com.fundamentosplatzi.springboot.fundamentos.bean.MyBean;
-import com.fundamentosplatzi.springboot.fundamentos.bean.MyBeanWithDependency;
-import com.fundamentosplatzi.springboot.fundamentos.bean.MyMessage;
-import com.fundamentosplatzi.springboot.fundamentos.bean.MyMessageWithDependency;
+import com.fundamentosplatzi.springboot.fundamentos.bean.*;
 import com.fundamentosplatzi.springboot.fundamentos.component.ComponentDependency;
+import com.fundamentosplatzi.springboot.fundamentos.pojo.UserPojo;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class FundamentosApplication implements CommandLineRunner {
@@ -23,12 +20,17 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	private MyMessageWithDependency myMessageWithDependency;
 
-	public FundamentosApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency, MyBean myBean, MyBeanWithDependency myBeanWithDependency, MyMessage myMessage, MyMessageWithDependency myMessageWithDependency){
+	private MyBeanWithProperties myBeanWithProperties;
+
+	private UserPojo userPojo;
+	public FundamentosApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency, MyBean myBean, MyBeanWithDependency myBeanWithDependency, MyMessage myMessage, MyMessageWithDependency myMessageWithDependency, MyBeanWithProperties myBeanWithProperties,UserPojo userPojo){
 		this.componentDependency=componentDependency;
 		this.myBean=myBean;
 		this.myBeanWithDependency=myBeanWithDependency;
 		this.myMessage=myMessage;
 		this.myMessageWithDependency=myMessageWithDependency;
+		this.myBeanWithProperties=myBeanWithProperties;
+		this.userPojo=userPojo;
 	}
 	public static void main(String[] args) {
 
@@ -42,5 +44,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		myBeanWithDependency.printWithDependency();
 		myMessage.msg("tan tan");
 		myMessageWithDependency.msgWithDependency();
+		System.out.println(myBeanWithProperties.function());
+		System.out.println(userPojo.getAge()+"-"+userPojo.getPassword()+"-"+userPojo.getEmail());
 	}
 }
