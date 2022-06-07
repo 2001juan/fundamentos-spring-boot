@@ -1,5 +1,6 @@
 package com.fundamentosplatzi.springboot.fundamentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -17,12 +18,13 @@ public class User {
 
     @Column(length = 50)
     private String name;
-    @Column(length = 50)
+    @Column(length = 50,unique = true)
     private String email;
 
     private LocalDate birthDate;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JsonManagedReference
+    //@JsonManagedReference --> ESTA NO FUNCIONA LA CORRECTA ES @JsonIgnore
+    @JsonIgnore
     private List<Post> post = new ArrayList<>();
 
     public User() {
@@ -32,6 +34,10 @@ public class User {
         this.name = name;
         this.email = email;
         this.birthDate = birthDate;
+    }
+
+    public User(Long id) {
+        this.id=id;
     }
 
     public String getName() {
@@ -71,6 +77,18 @@ public class User {
                 ", birthDate=" + birthDate +
                 ", post=" + post +
                 '}';
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }
 
