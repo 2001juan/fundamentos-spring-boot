@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -53,12 +54,45 @@ public class FundamentosApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		ejemplosAnteriores();
 		saveUsersInDataBase();
+		getInformationJpqlFromUser();
 	}
 
+	private void getInformationJpqlFromUser(){
+		/*LOGGER.info("Usuario con el método findByUserEmail "+
+				userRepository.findByUserEmail("juanchoramirez@gmail.com")
+				.orElseThrow(()-> new RuntimeException("No se encontro el usuario")));
+
+		userRepository.findAndSort("User", Sort.by("id").descending())
+				.stream()
+				.forEach(user -> LOGGER.info("usuario con metodo sort: "+ user));
+
+		userRepository.findByName("Juan")
+				.stream()
+				.forEach(user->LOGGER.info("usuario con query method "+ user));
+
+		LOGGER.info("usuario con query method findByEmailAndName "+ userRepository.findByEmailAndName("juanchoramirez@gmail.com","Juan")
+				.orElseThrow(()-> new RuntimeException("usuario no encontrado")));
+
+		userRepository.findByNameLike("%J%")
+				.stream()
+				.forEach(user->LOGGER.info("usuario con findByNameLike "+user));
+
+		userRepository.findByNameOrEmail("User10",null)
+				.stream()
+				.forEach(user->LOGGER.info("usuario con findByNameOrEmail "+user));*/
+
+		userRepository.findByBirthDateBetween(LocalDate.of(2021,01,01),LocalDate.of(2022,07,02))
+				.stream()
+				.forEach(user -> LOGGER.info("usuario con intervalo de fechas: "+user));
+
+		userRepository.findByNameContainingOrderByIdDesc("User")
+				.stream()
+				.forEach(user -> LOGGER.info("usuario encontrado por findByNameContainingOrderByIdDesc "+user));
+}
 	private void saveUsersInDataBase(){
 		User user1= new User("User1","user1@gmail.com", LocalDate.of(2022,06,11));
 		User user2= new User("User2","user2@gmail.com", LocalDate.of(2022,01,22));
-		User user3= new User("User3","user3@gmail.com", LocalDate.of(2022,02,3));
+		User user3= new User("Juan","user3@gmail.com", LocalDate.of(2022,02,3));
 		User user4= new User("User4","user4@gmail.com", LocalDate.of(2022,03,4));
 		User user5= new User("User5","user5@gmail.com", LocalDate.of(2022,04,5));
 		User user6= new User("User6","user6@gmail.com", LocalDate.of(2022,05,7));
